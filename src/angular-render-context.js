@@ -1,6 +1,6 @@
 ;(function(){ "use strict";
 
-  angular.module('j4').directive('renderContext', function($rootScope, $route, $routeParams) {
+  angular.module('j4').directive('renderContext', function($rootScope, $route) {
 
     function RenderContext(depth) {
       this.depth = depth || 0
