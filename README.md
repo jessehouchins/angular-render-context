@@ -6,7 +6,7 @@ A surprisingly simple Angular.js directive for managing nested views, routing, a
 
 ### Instalation
 
-Require `'j4'` as an app dependency and include this file in your layout or main JS package.
+Require `'j4'` as an app dependency and include `angular-render-context.js` in your layout or main JS package.
 
 
 ### Why?
