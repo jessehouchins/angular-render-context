@@ -44,4 +44,4 @@ Methods are available on the $scope.renderContext object.
   * `.next()`           -- Returns the next context (deeper)
   * `.prev()`           -- Returns the previous context (shallower)
   * `.is('context')`    -- Return true if the contexts match
-  * `.isNotSet()`       -- Returns true if the next context is falsy
+  * `.isNotSet()`       -- Returns true if the context is falsy
