@@ -9,6 +9,18 @@ A surprisingly simple Angular.js directive for managing nested views, routing, a
 Require `'j4'` as an app dependency and include this file in your layout or main JS package.
 
 
+### Why?
+
+The built in `ng-view` directive is a convenient way to provide content for unique routes within
+your application. However, it forces each route to have a unique template (and fully rerender)
+on routing events.
+
+The `render-context` directive works differently. It provides simple hooks to bind nested templates
+(or anything with access to $scope) to contextual routing changes at a specified depth. This means
+each nested context within your application can be responsible for it's own data and rendering, and
+only the changed parts of your layout will update then the route changes.
+
+
 ### Example Routes
 
 ```
