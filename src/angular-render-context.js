@@ -23,6 +23,10 @@
       return this.val(this.depth) === context
     }
 
+    RC.isNot = function(context) {
+      return this.val(this.depth) !== context
+    }
+
     RC.isNotSet = function() {
       return !this.val(this.depth)
     }

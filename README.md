@@ -11,14 +11,14 @@ Require `'j4'` as an app dependency and include `angular-render-context.js` in y
 
 ### Why?
 
-The built in `ng-view` directive is a convenient way to provide content for unique routes within
-your application. However, it forces each route to have a unique template (and fully rerender)
+The built in `ng-view` directive is a convenient way to provide unique content for routes within
+your application. However, it forces each route to have a single template/controller (and fully rerender)
 on routing events.
 
-The `render-context` directive works differently. It provides simple hooks to bind nested templates
+The `render-context` directive works differently. It provides a simple way to bind templates
 (or anything with access to $scope) to contextual routing changes at a specified depth. This means
 each nested context within your application can be responsible for it's own data and rendering, and
-only the changed parts of your layout will update then the route changes.
+only the relevant parts of your layout will update when the route changes.
 
 
 ### Example Routes
@@ -56,4 +56,5 @@ Methods are available on the $scope.renderContext object.
   * `.next()`           -- Returns the next context (deeper)
   * `.prev()`           -- Returns the previous context (shallower)
   * `.is('context')`    -- Return true if the contexts match
+  * `.isNot('context')` -- Return true if the contexts do not match
   * `.isNotSet()`       -- Returns true if the context is falsy
