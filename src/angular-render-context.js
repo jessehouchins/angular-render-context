@@ -1,6 +1,8 @@
 ;(function(){ "use strict";
 
-  angular.module('j4').directive('renderContext', function($rootScope, $route) {
+  var j4 = angular.module('j4', ['ngRoute'])
+
+  j4.directive('renderContext', function($rootScope, $route) {
 
     function RenderContext(opts) {
       opts = opts || {}
@@ -12,11 +14,11 @@
     var RC = RenderContext.prototype
 
     RC.next = function() {
-      return this._next = this._next || new RenderContext({prev: this)}
+      return this._next = this._next || new RenderContext({prev: this})
     }
 
     RC.prev = function() {
-      return this._prev = this._prev || new RenderContext({next: this)}
+      return this._prev = this._prev || new RenderContext({next: this})
     }
 
     RC.is = function(context) {
