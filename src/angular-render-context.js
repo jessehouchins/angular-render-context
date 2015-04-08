@@ -2,18 +2,21 @@
 
   angular.module('j4').directive('renderContext', function($rootScope, $route) {
 
-    function RenderContext(depth) {
-      this.depth = depth || 0
+    function RenderContext(opts) {
+      opts = opts || {}
+      var prev = this._prev = opts.prev
+      var next = this._next = opts.next
+      this.depth = prev ? prev.depth + 1 : next ? next.depth - 1 : 0
     }
 
     var RC = RenderContext.prototype
 
     RC.next = function() {
-      return this._next = this._next || new RenderContext(this.depth + 1)
+      return this._next = this._next || new RenderContext({prev: this)
     }
 
     RC.prev = function() {
-      return this._prev = this._prev || new RenderContext(this.depth - 1)
+      return this._prev = this._prev || new RenderContext({next: this)
     }
 
     RC.is = function(context) {
