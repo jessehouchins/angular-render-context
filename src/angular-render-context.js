@@ -1,71 +1,98 @@
 ;(function(){ "use strict";
 
-  var j4 = angular.module('j4', ['ngRoute'])
+  /*
 
-  j4.directive('renderContext', function($rootScope, $route) {
+    README: https://github.com/jessehouchins/angular-render-context
 
-    function RenderContext(opts) {
-      opts = opts || {}
-      var prev = this._prev = opts.prev
-      var next = this._next = opts.next
-      this.depth = prev ? prev.depth + 1 : next ? next.depth - 1 : 0
+    INSTALLATION: Require `renderContext` as a dependency in your app
+
+    TEMPLATE EXAMPLES: Given a route action of 'app.team.roster.players':
+
+      renderContext.layout === 'app'          => true
+      renderContext.app                       => truthy
+      renderContext.team.roster               => truthy
+      renderContext.roster.players            => truthy
+      renderContext.team.players              => falsy
+      renderContext.players.prev === 'roster' => true
+      renderContext.players.prev === 'team'   => false
+      renderContext.players.after.team        => truthy
+      renderContext.team.before.players       => truthy
+
+    CONTROLLER EXAMPLE: inject `renderContext` use the `.get()` method...
+
+      controller: function(renderContext) {
+        var isRosterPlayers = !!renderContext.get('roster.players')
+      }
+
+  */
+
+
+  var RC = angular.module('renderContext', [])
+
+  RC.run(function($rootScope, $route) {
+
+    function RenderContext() {
+      this._update()
+      $rootScope.constructor.prototype.renderContext = this
+      $rootScope.$on('$routeChangeSuccess', this._update.bind(this))
     }
 
-    var RC = RenderContext.prototype
+    RenderContext.prototype._update = function() {
+      this._reset()
 
-    RC.next = function() {
-      return this._next = this._next || new RenderContext({prev: this})
-    }
-
-    RC.prev = function() {
-      return this._prev = this._prev || new RenderContext({next: this})
-    }
-
-    RC.is = function(context) {
-      return this.val(this.depth) === context
-    }
-
-    RC.isNot = function(context) {
-      return this.val(this.depth) !== context
-    }
-
-    RC.isNotSet = function() {
-      return !this.val(this.depth)
-    }
-
-    RC.val = function(depth) {
+      var root = this
       var current = $route.current || {}
       var action = current.action || ''
-      return action.split('.')[depth || this.depth] || ''
-    }
+      var contextNames = action.split('.')
+      var contextName
+      var prevContext = {} // temp object for simple logic below
+      var prevContextName
+      var descendents = []
 
-    var VALID_CONTEXT_SHIFTS = ['next', 'prev']
+      root.is = {}
+      root.is[action] = true
+      root.layout = contextNames[0]
 
-    return {
-      restrict: 'EA',
-      scope: true,
-      link: {
-        pre: function(scope, el, attrs) {
-          var contextShift = attrs.renderContext
-          var renderScope = scope
-          var renderContext
+      while (contextName = contextNames.shift()) {
+        var nextContextName = contextNames[0]
 
-          while (renderScope && !renderContext) {
-            renderContext = renderScope.renderContext
-            renderScope = renderScope.$parent
-          }
+        // Build the context object and link it in the chain
+        var context = root[contextName] = prevContext[contextName] = {
+          prev: prevContextName,
+          next: nextContextName,
+          before: _.object(contextNames, contextNames),
+          after: _.object(descendents, descendents)
+        }
 
-          // Set render context on this child scope or show a warning.
-          if (!renderContext || !contextShift) {
-            scope.renderContext = renderContext || new RenderContext()
-          } else if (VALID_CONTEXT_SHIFTS.indexOf(contextShift) === -1) {
-            console.warn("RenderContext: Invalid render context requested.")
-          } else {
-            scope.renderContext = renderContext[contextShift]()
-          }
+        // setup for the next loop
+        if (nextContextName) {
+          prevContext = context
+          prevContextName = contextName
+          descendents.push(contextName)
         }
       }
     }
+
+    RenderContext.prototype._reset = function() {
+      for (var contextName in this) {
+        if (typeof this[contextName] !== 'function') delete this[contextName]
+      }
+    }
+
+    RenderContext.prototype.get = function(path) {
+      var context = this
+      var contextNames = path.split('.')
+      var contextName
+
+      while (contextName = contextNames.shift()) {
+        context = context[contextName]
+        if (!context) return
+      }
+
+      return context
+    }
+
+    RC.value('renderContext', new RenderContext())
 
   })
 
