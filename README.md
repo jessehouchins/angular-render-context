@@ -18,14 +18,14 @@ on routing events.
 [Angular UI Router](http://angular-ui.github.io/ui-router/) is another popular routing module for complex applications. Be sure to check it out. I find it kinda heavy to be honest, but it has great community support.
 
 The `render-context` directive works differently. It works with `ngRoute` to provide a simple way to bind templates
-(or anything with access to $scope) to contextual routing changes. This means
+(or anything with access to `$scope`) to contextual routing changes. This means
 each nested context within your application can be responsible for it's own data and rendering, and
 only the relevant parts of your layout will update when the route changes.
 
 
 ### What It Does
 
-The render context module watches for the `$routeChangeSuccess` event within your application and updates the public render context object. This object s available on every scope and can be pulled into other modules by injecting `renderContext`. You can write template logic, or create your own watchers on this global object to respond to changes however you like.
+The render context module watches for the `$routeChangeSuccess` event within your application and updates the public render context object. This object is available on every scope and can be pulled into other modules by injecting `renderContext`. You can write template logic, or create your own watchers on this global object to respond to changes however you like.
 
 
 ### How to Use It
