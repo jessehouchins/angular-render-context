@@ -98,7 +98,9 @@ You can also inject renderContext into controllers, or other modules:
     }
 ```
 
-### `renderContext.get(context)`
+### Methods
+
+####`renderContext.get(context)`
 
 Getting nested properties on the renderContext object is easy enough from a template. However, with object syntax, you would need to check individual properties in the chain to avoid undefined object errors. The `get` method provides a simple interface for checking nested properties.
 
@@ -108,7 +110,7 @@ Getting nested properties on the renderContext object is easy enough from a temp
     }
 ```
 
-### `renderContext.goto(context, contextParams, replace)`
+#### `renderContext.goto(context, contextParams, replace)`
 
 This is available as a method and a directive that can be used for navigaton. The complimentary `context-parmas` directive allows you to pass data required to evaluate the route's URL. If you do not pass a required param, **the module will try to find the value in the existing $routeParams hash**. If a required param is not found, it will throw an error. Setting replace to `true` will not ada history record when navigating.
 
@@ -136,7 +138,7 @@ Example from a controller/module:
     }
 ```
 
-### `renderContext.backto(context, replace)`
+#### `renderContext.backto(context, replace)`
 
 This method will navigate back to a higher level in the current context. For example, if the current context is `app.users.messages.preview`, calling `renderContext.backto('users')` will set the context to `app.users`.
 
