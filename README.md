@@ -14,10 +14,13 @@ The built in `ng-view` directive, while convenient, is limited and forces each r
 
 Require `'renderContext'` as an app dependency and include `angular-render-context.js` in your layout or main JS package.
 
+---------------------------
 
 ### How it Works
 
 The render context module watches for the `$routeChangeSuccess` event within your application and updates a public render context object. You can write template logic, or create your own watchers on this global object to respond to changes however you like.
+
+---------------------------
 
 ### Routing
 
@@ -32,6 +35,7 @@ Routing with render context is very simple. Just define a context param for each
     .when('/groups', { context: 'app.groups.list' })
     .otherwise({ context: 'error.404' })
 ```
+---------------------------
 
 ### The `renderContext` Object
 
@@ -97,6 +101,8 @@ You can also inject renderContext into controllers, or other modules:
       }
     }
 ```
+
+---------------------------
 
 ### Methods
 
