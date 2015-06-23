@@ -100,7 +100,7 @@ You can also inject renderContext into controllers, or other modules:
 
 ### `renderContext.get(context)`
 
-Getting nested properties on the render context object is easy enough from a template. However, with object syntax, you would need to check individual properties in the chain to avoid undefined object errors. The `get` method provides a simple interface for checling nested properties.
+Getting nested properties on the renderContext object is easy enough from a template. However, with object syntax, you would need to check individual properties in the chain to avoid undefined object errors. The `get` method provides a simple interface for checking nested properties.
 
 ```
     controller: function($scope, renderContext) {
