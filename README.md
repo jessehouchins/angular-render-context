@@ -92,9 +92,19 @@ You can also inject renderContext into controllers, or other modules:
 
 ```
     controller: function($scope, renderContext) {
-      if (renderContext.users.dashboard) {
+      if (renderContext.users) {
         // do something here.
       }
+    }
+```
+
+### `renderContext.get(context)`
+
+Getting nested properties on the render context object is easy enough from a template. However, with object syntax, you would need to check individual properties in the chain to avoid undefined object errors. The `get` method provides a simple interface for checling nested properties.
+
+```
+    controller: function($scope, renderContext) {
+      var isMessagePreview = renderContext.get('users.messages.preview')
     }
 ```
 

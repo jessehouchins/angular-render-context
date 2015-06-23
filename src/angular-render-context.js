@@ -20,8 +20,6 @@
     }
 
     RenderContext.prototype._update = function() {
-      this._reset()
-
       var root = this
       var current = $route.current || {}
       var currentContext = current.context || ''
@@ -30,11 +28,15 @@
       var prevContext = {} // temp object for simple logic below
       var prevContextName
       var descendents = []
+      var contexts = root.contexts = root.contexts || []
+
+      this._reset()
 
       root.context = currentContext
       root.layout = contextNames[0]
 
       while (contextName = contextNames.shift()) {
+        contexts.push(contextName)
         var nextContextName = contextNames[0]
 
         // Build the context object and link it in the chain
@@ -54,9 +56,10 @@
       }
     }
 
+    // removes custom context attributes
     RenderContext.prototype._reset = function() {
-      for (var contextName in this) {
-        if (typeof this[contextName] !== 'function') delete this[contextName]
+      while (var contextName = this.contexts.shift())
+        delete this[contextName]
       }
     }
 
